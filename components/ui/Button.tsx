@@ -1,11 +1,15 @@
 import Link from "next/link";
-import React, { MouseEventHandler, PropsWithChildren } from "react";
+import React, {
+  EventHandler,
+  MouseEventHandler,
+  PropsWithChildren,
+} from "react";
 
 import styles from "./Button.module.css";
 
 interface ButtonProps extends PropsWithChildren {
   link?: string;
-  onClick: MouseEventHandler;
+  onClick?: React.MouseEventHandler<HTMLButtonElement> | undefined;
 }
 
 function Button({ link, children, onClick }: ButtonProps) {
@@ -16,7 +20,11 @@ function Button({ link, children, onClick }: ButtonProps) {
       </Link>
     );
   }
-  return <button className={styles.btn}>{children}</button>;
+  return (
+    <button onClick={onClick} className={styles.btn}>
+      {children}
+    </button>
+  );
 }
 
 export default Button;

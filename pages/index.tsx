@@ -26,5 +26,5 @@ export default function HomePage({ featuredEvents }: HomePageProps) {
 
 export const getStaticProps: GetStaticProps = async () => {
   const featuredEvents = await getFeaturedEvents();
-  return { props: { featuredEvents: featuredEvents } };
+  return { props: { featuredEvents: featuredEvents }, revalidate: 1800 };
 };

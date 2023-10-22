@@ -1,13 +1,30 @@
 import EventList from "@/components/events/EventList";
-import EventsSearch from "@/components/events/EventsSearch";
-import { getFeaturedEvents } from "@/dummy-data";
+import { getFeaturedEvents } from "@/components/helpers/api-util";
+import { GetStaticProps } from "next";
 import { Fragment } from "react";
 
-export default function HomePage() {
-  const featuredEvents = getFeaturedEvents();
+export interface EventType {
+  id: string;
+  title: string;
+  description: string;
+  location: string;
+  date: string;
+  image: string;
+  isFeatured: Boolean;
+}
+interface HomePageProps {
+  featuredEvents: EventType[];
+}
+
+export default function HomePage({ featuredEvents }: HomePageProps) {
   return (
     <Fragment>
       <EventList events={featuredEvents} />
     </Fragment>
   );
 }
+
+export const getStaticProps: GetStaticProps = async () => {
+  const featuredEvents = await getFeaturedEvents();
+  return { props: { featuredEvents: featuredEvents } };
+};

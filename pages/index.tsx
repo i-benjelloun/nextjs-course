@@ -1,9 +1,11 @@
 import Link from "next/link";
-import { FormEvent, useRef } from "react";
+import { FormEvent, useRef, useState } from "react";
+import { Feedback } from "./api/feedback";
 
 export default function Home() {
   const emailRef = useRef<HTMLInputElement>(null);
   const feedbackRef = useRef<HTMLTextAreaElement>(null);
+  const [feedbackItems, setFeedbackItems] = useState<Feedback[]>([]);
 
   function submitHandler(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -20,6 +22,12 @@ export default function Home() {
       .then((data) => console.log(data));
   }
 
+  function loadFeedbackHandler() {
+    fetch("/api/feedback")
+      .then((response) => response.json())
+      .then((data) => setFeedbackItems(data.feedback));
+  }
+
   return (
     <div>
       <h1>The home page</h1>
@@ -34,6 +42,13 @@ export default function Home() {
         </div>
         <button type="submit">Send feedback</button>
       </form>
+      <hr />
+      <button onClick={loadFeedbackHandler}>Load feedback</button>
+      <ul>
+        {feedbackItems.map((item) => (
+          <li key={item.id}>{item.text}</li>
+        ))}
+      </ul>
     </div>
   );
 }
